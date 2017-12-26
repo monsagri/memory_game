@@ -87,8 +87,13 @@ img.socialmedia {
 	border-radius: 10px;
 }
 
+img.card:hover {
+	border: 2px dotted black;
+
+}
+
 footer {
-	background-color: rgba(101,115,126,0.5);
+	background-color: rgba(13,44,64,0.8);
 	padding: 0;
 }
 
