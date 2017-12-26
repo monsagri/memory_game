@@ -20,6 +20,7 @@ h1 {
 h3	{
 	font-weight: 600;
 	font-size: 20px;
+	margin: 20px 0;
 
 }
 
@@ -39,6 +40,16 @@ a {
 	text-decoration: none;
 	font-style: italic;
 	margin: 0 20px;
+}
+
+a.navbar {
+	diplay: block;
+	float: none;
+	padding: 20px;
+}
+
+a.navbar:hover {
+	background-color: #F15B31;
 }
 
 header {
@@ -81,5 +92,12 @@ footer {
 	padding: 0;
 }
 
-
+.clearfix:after {
+	visibility: hidden;
+	display: block;
+	content: " ";
+	clear: both;
+	height: 0;
+	font-size: 0;
+}
 
