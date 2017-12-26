@@ -46,6 +46,7 @@ a.navbar {
 	diplay: block;
 	float: none;
 	padding: 20px;
+	text-decoration: none;
 }
 
 a.navbar:hover {
