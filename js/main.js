@@ -1,6 +1,26 @@
 console.log("Up and running!");
 
- var cards = ["queen","queen","king","king",];
+ var cards = [ {
+ 	rank:"queen",
+ 	suit:"diamonds",
+ 	cardImage:"images/queen-of-diamonds.jpg",
+ },
+ {
+ 	rank:"queen",
+ 	suit:"hearts",
+ 	cardImage:"images/queen-of-hearts.jpg",
+ },
+ {
+ 	rank:"king",
+ 	suit:"diamonds",
+ 	cardImage:"images/king-of-diamonds.jpg",
+ },
+ {
+ 	rank:"king",
+ 	suit:"hearts",
+ 	cardImage:"images/king-of-hearts.jpg",
+ }
+ ];
  var cardsInPlay = [];
 
  	// Check if cards match and empty the array after checking
@@ -18,8 +38,8 @@ var checkForMatch = function() {
 var flipCard = function(cardId) {
 	var cardOne;
  	var cardTwo;
- 	console.log("Player flipped " + cards[cardId]);
- 	cardsInPlay.push(cards[cardId]);
+ 	console.log("Player flipped " + cards[cardId].rank + " of " + cards[cardId].suit);
+ 	cardsInPlay.push(cards[cardId].rank);
  	if (cardsInPlay.length === 2) {
  		checkForMatch();
  	};	
