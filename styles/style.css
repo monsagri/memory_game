@@ -128,3 +128,21 @@ td {
 .board {
 	
 }
+
+#scorebox {
+	border: 5px solid #F15B31;
+	margin: 10px 5px;
+	display: inline-block;
+	background-color: #00A6B3;
+	font-size: 22px;
+	font-weight: 600px;
+	width: 15%;
+	}
+
+#scoredisplay {
+	font-size: 28px;
+	font-weight: 800px;
+	color: #F15B31;
+	padding: 5px;
+
+}

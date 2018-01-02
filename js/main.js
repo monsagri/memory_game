@@ -28,6 +28,7 @@ console.log("Up and running!");
 var checkForMatch = function() {
 	if (cardsInPlay[0] === cardsInPlay[1]) {
 		console.log("You found a match!");
+		//Remove flipped cards from the board
 		cardsInPlay = [];
 	} else {
 		console.log("Sorry, try again.");
@@ -61,13 +62,27 @@ var createBoard = function() {
 
 createBoard();
 
+//Reset Board and Score function
+var reset = function () {
+	document.getElementById('game-board').innerHTML = "";
+	createBoard();
+	document.getElementById('scoredisplay').innerHTML = 0;
+	cardsInPlay = [];
+}
+
+//Add Listener for Reset button click
+document.getElementById('resetbutton').addEventListener('click', reset);
+
 //Enter highscores into table
 var scores = [];
 	for (i = 0;i <= 4;i++)
 		scores.push(parseInt(document.getElementById('score'+ i).innerHTML));
 
-var scoreentry = prompt("Enter your score please");
-var score = parseInt(scoreentry);
+
+//var scoreentry = prompt("Enter your score please");
+//var score = parseInt(scoreentry);
+var score = 0
+
 
 // Check for highscore using if
 	if ( score > scores[0]) {
