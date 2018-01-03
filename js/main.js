@@ -1,98 +1,5 @@
 console.log("Up and running!");
 
-// Cards
- var cards = [ {
- 	rank:"queen",
- 	suit:"clubs",
- 	cardImage:"images/cards/queen-of-clubs.png",
- },
- {
- 	rank:"queen",
- 	suit:"spades",
- 	cardImage:"images/cards/queen-of-spades.png",
- },
- {
- 	rank:"king",
- 	suit:"clubs",
- 	cardImage:"images/cards/king-of-clubs.png",
- },
- {
- 	rank:"king",
- 	suit:"spades",
- 	cardImage:"images/cards/king-of-spades.png",
- },
- {
-	rank:"jack",
- 	suit:"clubs",
- 	cardImage:"images/cards/jack-of-clubs.png",
- },
- {
- 	rank:"jack",
- 	suit:"spades",
- 	cardImage:"images/cards/jack-of-spades.png",
- },
- {
-	rank:"10",
- 	suit:"clubs",
- 	cardImage:"images/cards/10-of-clubs.png",
- },
- {
-	rank:"10",
- 	suit:"spades",
- 	cardImage:"images/cards/10-of-spades.png",
- },
- {
-	rank:"9",
- 	suit:"clubs",
- 	cardImage:"images/cards/9-of-clubs.png",
- },
- {
-	rank:"9",
- 	suit:"spades",
- 	cardImage:"images/cards/9-of-spades.png",
- },
- {
-	rank:"8",
- 	suit:"clubs",
- 	cardImage:"images/cards/8-of-clubs.png",
- },
- {
-	rank:"8",
- 	suit:"spades",
- 	cardImage:"images/cards/8-of-spades.png",
- },
- {
-	rank:"7",
- 	suit:"clubs",
- 	cardImage:"images/cards/7-of-clubs.png",
- },
- {
-	rank:"7",
- 	suit:"spades",
- 	cardImage:"images/cards/7-of-spades.png",
- },
- {
-	rank:"6",
- 	suit:"clubs",
- 	cardImage:"images/cards/6-of-clubs.png",
- },
- {
-	rank:"6",
- 	suit:"spades",
- 	cardImage:"images/cards/6-of-spades.png",
- },
- {
-	rank:"5",
- 	suit:"spades",
- 	cardImage:"images/cards/5-of-spades.png",
- },
- {
-	rank:"5",
- 	suit:"clubs",
- 	cardImage:"images/cards/5-of-clubs.png",
- }
- ];
-
  var cardsInPlay = [];
  var cardAmount = cards.length;
  var scoreString = parseInt(document.getElementById('scoredisplay').innerHTML);
@@ -131,7 +38,6 @@ var checkForMatch = function() {
 			cardsInPlay = [];
 	}
 }
-
  // flipping Cards 
 var flipCard = function() {
 	cardId = this.getAttribute('data-id');
@@ -143,7 +49,6 @@ var flipCard = function() {
  		checkForMatch();
  	};	
 };
-
 //Create the board
 var createBoard = function() {
 	for (var i = 0; i < cards.length; i++) {
@@ -154,7 +59,6 @@ var createBoard = function() {
 			cardElement.setAttribute('class', "card");
 			cardElement.addEventListener('click', flipCard);
 			document.getElementById('game-board').appendChild(cardElement);
-
 	};
 };
 
@@ -203,14 +107,3 @@ var checkForHighscore = function() {
 		alert("Better luck next time!");
 	}
 };
-
-
- /* Get random integers (MDN Sourced)
-
- var getRandomInt = function(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-}
-console.log (getRandomInt(0, cardAmount));
-*/
