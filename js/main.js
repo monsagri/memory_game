@@ -22,17 +22,25 @@ console.log("Up and running!");
  	cardImage:"images/king-of-hearts.png",
  }
  ];
+
  var cardsInPlay = [];
+ var scoreString = parseInt(document.getElementById('scoredisplay').innerHTML);
 
  	// Check if cards match and empty the array after checking
 var checkForMatch = function() {
 	if (cardsInPlay[0] === cardsInPlay[1]) {
 		console.log("You found a match!");
-		//Remove flipped cards from the board
-		cardsInPlay = [];
+		//Find a way to remove flipped cards
+			scoreString += 5;
+			document.getElementById('scoredisplay').innerHTML = scoreString;
+			cardsInPlay = [];
+
+		
 	} else {
 		console.log("Sorry, try again.");
 		// Add a way to unflip wrong cards
+			scoreString -= 2;
+			document.getElementById('scoredisplay').innerHTML = scoreString;
 		cardsInPlay = [];
 	}
 }
@@ -54,6 +62,7 @@ var createBoard = function() {
 			cardElement = document.createElement('img');
 			cardElement.setAttribute('src', "images/back.png");
 			cardElement.setAttribute('data-id', i);
+			cardElement.setAttribute('data-rank', cards[i].rank)
 			cardElement.addEventListener('click', flipCard);
 			document.getElementById('game-board').appendChild(cardElement);
 
@@ -64,6 +73,7 @@ createBoard();
 
 //Reset Board and Score function
 var reset = function () {
+	checkForHighscore();
 	document.getElementById('game-board').innerHTML = "";
 	createBoard();
 	document.getElementById('scoredisplay').innerHTML = 0;
@@ -81,31 +91,40 @@ var scores = [];
 
 //var scoreentry = prompt("Enter your score please");
 //var score = parseInt(scoreentry);
-var score = 0
 
 
 // Check for highscore using if
-	if ( score > scores[0]) {
+var checkForHighscore = function() {
+	if ( scoreString > scores[0]) {
 		var player = prompt("Congratulations! Enter your name for the Board!");
 		document.getElementById('player0').innerHTML = player;
-		document.getElementById('score0').innerHTML = score;
-	} else if (score > scores[1]) {
-		var player = prompt("Congratulations! Enter your name for the Board!");
+		document.getElementById('score0').innerHTML = scoreString;
+	} else if (scoreString > scores[1]) {
+		var playerString = prompt("Congratulations! Enter your name for the Board!");
 		document.getElementById('player1').innerHTML = player;
-		document.getElementById('score1').innerHTML = score;
-	} else if ( score > scores[2]) {
+		document.getElementById('score1').innerHTML = scoreString;
+	} else if ( scoreString > scores[2]) {
 		var player = prompt("Congratulations! Enter your name for the Board!");
 		document.getElementById('player2').innerHTML = player;
-		document.getElementById('score2').innerHTML = score;
-	} else if ( score > scores[3]) {
+		document.getElementById('score2').innerHTML = scoreString;
+	} else if ( scoreString > scores[3]) {
 		var player = prompt("Congratulations! Enter your name for the Board!");
 		document.getElementById('player3').innerHTML = player;
-		document.getElementById('score3').innerHTML = score;
-	}else if ( score > scores [4]) {
+		document.getElementById('score3').innerHTML = scoreString;
+	}else if ( scoreString > scores [4]) {
 		var player = prompt("Congratulations! Enter your name for the Board!");
 		document.getElementById('player4').innerHTML = player;
-		document.getElementById('score4').innerHTML = score;
+		document.getElementById('score4').innerHTML = scoreString;
 	} else {
 		alert("Better luck next time!");
 	}
+};
   
+/* Attempt to remove flipped cards from the board
+		for (i = 0; i < cardsInPlay.length; i++) {
+			console.log(cardsInPlay[i]);
+			var currentCard = document.querySelectorAll('data-rank = " + CSS.escape(cardsInPlay[i]) + "');
+			console.log(currentCard);
+			currentCard.innerHTML = "";
+
+*/
