@@ -129,7 +129,7 @@ td {
 	
 }
 
-#scorebox {
+.gamefunctioncontainer {
 	border: 5px solid #F15B31;
 	margin: 10px 5px;
 	display: inline-block;
@@ -137,12 +137,11 @@ td {
 	font-size: 22px;
 	font-weight: 600px;
 	width: 15%;
+	height: 10%;
 	}
 
-#scoredisplay {
-	font-size: 28px;
-	font-weight: 800px;
+.gamefunction {
+	font-size: 22px;
+	font-weight: 00px;
 	color: #F15B31;
-	padding: 5px;
-
 }

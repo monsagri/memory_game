@@ -24,30 +24,40 @@ console.log("Up and running!");
  ];
 
  var cardsInPlay = [];
+ var cardAmount = cards.length;
  var scoreString = parseInt(document.getElementById('scoredisplay').innerHTML);
 
- 	// Check if cards match and empty the array after checking
+ // Check if cards match and empty the array after checking
 var checkForMatch = function() {
+	var flippedCards = document.querySelectorAll("img[data-status = 'flipped']");
+	//var flippedCard1 = document.querySelectorAll("img[data-status = 'flipped']")[1];
 	if (cardsInPlay[0] === cardsInPlay[1]) {
 		console.log("You found a match!");
-		//Find a way to remove flipped cards
+		//Find a way to remove flipped cards   -> set status to found
 			scoreString += 5;
 			document.getElementById('scoredisplay').innerHTML = scoreString;
+			for (i = 0; i <flippedCards.length; i++) {
+				flippedCards[i].setAttribute('data-status', "found");
+				flippedCards[i].removeEventListener('click', flipCard);
+			};
 			cardsInPlay = [];
-
-		
 	} else {
 		console.log("Sorry, try again.");
-		// Add a way to unflip wrong cards
+		// Add a way to unflip wrong cards -> set status back to unflipped and change src
 			scoreString -= 2;
 			document.getElementById('scoredisplay').innerHTML = scoreString;
-		cardsInPlay = [];
+			for (i = 0; i <flippedCards.length; i++) {
+				flippedCards[i].setAttribute('src', "images/back.png");
+				flippedCards[i].setAttribute('data-status', "unflipped");
+			};
+			cardsInPlay = [];
 	}
 }
 
  // flipping Cards 
 var flipCard = function() {
 	cardId = this.getAttribute('data-id');
+	this.setAttribute('data-status', "flipped");
  	console.log("Player flipped " + cards[cardId].rank + " of " + cards[cardId].suit);
  	cardsInPlay.push(cards[cardId].rank);
  	this.setAttribute('src', cards[cardId].cardImage);
@@ -62,7 +72,7 @@ var createBoard = function() {
 			cardElement = document.createElement('img');
 			cardElement.setAttribute('src', "images/back.png");
 			cardElement.setAttribute('data-id', i);
-			cardElement.setAttribute('data-rank', cards[i].rank)
+			cardElement.setAttribute('data-status', "unflipped");
 			cardElement.addEventListener('click', flipCard);
 			document.getElementById('game-board').appendChild(cardElement);
 
@@ -87,11 +97,6 @@ document.getElementById('resetbutton').addEventListener('click', reset);
 var scores = [];
 	for (i = 0;i <= 4;i++)
 		scores.push(parseInt(document.getElementById('score'+ i).innerHTML));
-
-
-//var scoreentry = prompt("Enter your score please");
-//var score = parseInt(scoreentry);
-
 
 // Check for highscore using if
 var checkForHighscore = function() {
@@ -119,12 +124,14 @@ var checkForHighscore = function() {
 		alert("Better luck next time!");
 	}
 };
-  
-/* Attempt to remove flipped cards from the board
-		for (i = 0; i < cardsInPlay.length; i++) {
-			console.log(cardsInPlay[i]);
-			var currentCard = document.querySelectorAll('data-rank = " + CSS.escape(cardsInPlay[i]) + "');
-			console.log(currentCard);
-			currentCard.innerHTML = "";
 
+
+ /* Get random integers (MDN Sourced)
+
+ var getRandomInt = function(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+console.log (getRandomInt(0, cardAmount));
 */
