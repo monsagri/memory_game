@@ -29,7 +29,6 @@ var shuffleCards = function() {
 	var currentBoard = document.querySelectorAll("img[data-id]");
 	for (i = 0; i < currentBoard.length; i++) {
 			var randomNumber = getRandomInt(0, currentBoard.length);
-			console.log(randomNumber);
 			var cardToShuffle = document.getElementById('game-board').childNodes[i];
 			var randomCardLocation = document.getElementById('game-board').childNodes[randomNumber];
 			document.getElementById('game-board').insertBefore(cardToShuffle, randomCardLocation);
@@ -60,15 +59,14 @@ var checkForMatch = function() {
 				flippedCards[i].setAttribute('data-status', "found");
 				flippedCards[i].removeEventListener('click', flipCard);
 			};
-		/*Check to see if any cards remain unflipped and check for Highscores if not
-			var remainingCards = document.querySelectorAll("img[data-status = 'unflipped']");
-			console.log(remainingCards)
-			if (remainingCards == "") {
+		//Check to see if any cards remain unflipped and check for Highscores if not
+			var cardsLeft = document.querySelectorAll("img[data-status= 'unflipped']");
+			if (cardsLeft.length === 0) {
 				checkForHighscore();
 			} else {
 
 			};
-		*/
+		
 			cardsInPlay = [];
 	} else {
 		alert("Sorry, try again.");
@@ -85,7 +83,6 @@ var checkForMatch = function() {
 
 //Reset Board and Score function
 var reset = function () {
-	checkForHighscore();
 	document.getElementById('game-board').innerHTML = "";
 	createBoard();
 	document.getElementById('scoredisplay').innerHTML = 0;
@@ -125,7 +122,8 @@ var checkForHighscore = function() {
 	} else {
 		alert("Better luck next time!");
 	}
+	reset();
 };
-
+		
 createBoard();
 shuffleCards();
