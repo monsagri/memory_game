@@ -1,6 +1,7 @@
 console.log("Up and running!");
 
  var cardsInPlay = [];
+ var cardsInPlaySuit = [];
  var cardAmount = cards.length;
  var scoreString = parseInt(document.getElementById('scoredisplay').innerHTML);
 
@@ -41,6 +42,7 @@ var flipCard = function() {
 	this.setAttribute('data-status', "flipped");
  	console.log("Player flipped " + cards[cardId].rank + " of " + cards[cardId].suit);
  	cardsInPlay.push(cards[cardId].rank);
+ 	cardsInPlaySuit.push(cards[cardId].suit);
  	this.setAttribute('src', cards[cardId].cardImage);
  	if (cardsInPlay.length === 2) {
  		checkForMatch();
@@ -50,7 +52,8 @@ var flipCard = function() {
  // Check if cards match and empty the array after checking
 var checkForMatch = function() {
 	var flippedCards = document.querySelectorAll("img[data-status = 'flipped']");
-	if (cardsInPlay[0] === cardsInPlay[1]) {
+	// Check for a match
+	if (cardsInPlay[0] === cardsInPlay[1] && cardsInPlaySuit[0] != cardsInPlaySuit[1]) {
 		alert("You found a match!");
 		//Find a way to remove flipped cards   -> set status to found
 			scoreString += 5;
@@ -68,7 +71,18 @@ var checkForMatch = function() {
 			};
 		
 			cardsInPlay = [];
-	} else {
+			cardsInPlaySuit = [];
+	}  //Check if player has clicked same card twice
+	else if (cardsInPlay[0] === cardsInPlay[1] && cardsInPlaySuit[0] == cardsInPlaySuit[1]) {
+		alert("No Cheating!");
+		for (i = 0; i <flippedCards.length; i++) {
+				flippedCards[i].setAttribute('src', "images/cards/back.png");
+				flippedCards[i].setAttribute('data-status', "unflipped");
+			};
+		cardsInPlay = [];
+		cardsInPlaySuit = [];
+	} //Reset state if no match found
+	else {
 		alert("Sorry, try again.");
 		// Add a way to unflip wrong cards -> set status back to unflipped and change src
 			scoreString -= 2;
@@ -78,6 +92,7 @@ var checkForMatch = function() {
 				flippedCards[i].setAttribute('data-status', "unflipped");
 			};
 			cardsInPlay = [];
+			cardsInPlaySuit = [];
 	}
 }
 
