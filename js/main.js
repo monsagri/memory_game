@@ -23,6 +23,9 @@ var createBoard = function() {
 	};
 	
 };
+var timedCheck = function(){
+	setTimeout(checkForHighscore, 2000);
+};
 
 // Use insertChild to move each card around once to a random position
 	//Create a random number between 0 and currentBoard.length as new position
@@ -45,7 +48,7 @@ var flipCard = function() {
  	cardsInPlaySuit.push(cards[cardId].suit);
  	this.setAttribute('src', cards[cardId].cardImage);
  	if (cardsInPlay.length === 2) {
- 		checkForMatch();
+ 		checkForMatchDelay();
  	};	
 };
 
@@ -74,7 +77,7 @@ var checkForMatch = function() {
 			cardsInPlaySuit = [];
 	}  //Check if player has clicked same card twice
 	else if (cardsInPlay[0] === cardsInPlay[1] && cardsInPlaySuit[0] == cardsInPlaySuit[1]) {
-		alert("No Cheating!");
+		//alert("No Cheating!");
 		for (i = 0; i <flippedCards.length; i++) {
 				flippedCards[i].setAttribute('src', "images/cards/back.png");
 				flippedCards[i].setAttribute('data-status', "unflipped");
@@ -83,7 +86,7 @@ var checkForMatch = function() {
 		cardsInPlaySuit = [];
 	} //Reset state if no match found
 	else {
-		alert("Sorry, try again.");
+		//alert("Sorry, try again.");
 		// Add a way to unflip wrong cards -> set status back to unflipped and change src
 			scoreString -= 2;
 			document.getElementById('scoredisplay').innerHTML = scoreString;
@@ -95,6 +98,12 @@ var checkForMatch = function() {
 			cardsInPlaySuit = [];
 	}
 }
+
+//checkmatch but with delay
+
+var checkForMatchDelay = function(){
+	setTimeout(checkForMatch, 2000);
+};
 
 //Reset Board and Score function
 var reset = function () {
