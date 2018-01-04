@@ -106,12 +106,12 @@ var checkForMatchDelay = function(){
 };
 
 //Reset Board and Score function
-var reset = function () {
+var reset = function() {
 	document.getElementById('game-board').innerHTML = "";
 	createBoard();
 	document.getElementById('scoredisplay').innerHTML = 0;
 	cardsInPlay = [];
-}
+};
 
 //Add Listener for Reset button click
 document.getElementById('resetbutton').addEventListener('click', reset);
@@ -121,26 +121,37 @@ var scores = [];
 	for (i = 0;i <= 4;i++)
 		scores.push(parseInt(document.getElementById('score'+ i).innerHTML));
 
+//validate Playername input
+var player = "";
+var highscoreInput = function() {
+	player = prompt("Congratulations! Enter your name for the Board!");
+	if (player.length > 10) {
+		player = prompt("Please use a maximum of 10 characters.");
+	} else {
+
+	};
+};
+
 // Check for highscore using if
 var checkForHighscore = function() {
 	if ( scoreString > scores[0]) {
-		var player = prompt("Congratulations! Enter your name for the Board!");
+		highscoreInput();
 		document.getElementById('player0').innerHTML = player;
 		document.getElementById('score0').innerHTML = scoreString;
 	} else if (scoreString > scores[1]) {
-		var playerString = prompt("Congratulations! Enter your name for the Board!");
+		highscoreInput();
 		document.getElementById('player1').innerHTML = player;
 		document.getElementById('score1').innerHTML = scoreString;
 	} else if ( scoreString > scores[2]) {
-		var player = prompt("Congratulations! Enter your name for the Board!");
+		highscoreInput();
 		document.getElementById('player2').innerHTML = player;
 		document.getElementById('score2').innerHTML = scoreString;
 	} else if ( scoreString > scores[3]) {
-		var player = prompt("Congratulations! Enter your name for the Board!");
+		highscoreInput();
 		document.getElementById('player3').innerHTML = player;
 		document.getElementById('score3').innerHTML = scoreString;
 	}else if ( scoreString > scores [4]) {
-		var player = prompt("Congratulations! Enter your name for the Board!");
+		highscoreInput();
 		document.getElementById('player4').innerHTML = player;
 		document.getElementById('score4').innerHTML = scoreString;
 	} else {
