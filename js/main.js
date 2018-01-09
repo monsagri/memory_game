@@ -1,15 +1,14 @@
 console.log("Up and running!");
-
+//Declare global variables
  var cardsInPlay = [];
  var cardsInPlaySuit = [];
  var cardAmount = cards.length;
+ var player = "";
  var scoreString = parseInt(document.getElementById('scoredisplay').innerHTML);
-
  //Random number generation from MDN
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
+};
 //Create the board
 var createBoard = function() {
 	for (var i = 0; i < cards.length; i++) {
@@ -21,12 +20,11 @@ var createBoard = function() {
 			cardElement.addEventListener('click', flipCard);
 			document.getElementById('game-board').appendChild(cardElement);
 	};
-	
 };
+//Delay ending the game
 var timedCheck = function(){
-	setTimeout(checkForHighscore, 2000);
+	setTimeout(checkForHighscore, 1200);
 };
-
 // Use insertChild to move each card around once to a random position
 	//Create a random number between 0 and currentBoard.length as new position
 var shuffleCards = function() {
@@ -37,8 +35,7 @@ var shuffleCards = function() {
 			var randomCardLocation = document.getElementById('game-board').childNodes[randomNumber];
 			document.getElementById('game-board').insertBefore(cardToShuffle, randomCardLocation);
 	};
-}
-
+};
  // flipping Cards 
 var flipCard = function() {
 	cardId = this.getAttribute('data-id');
@@ -51,7 +48,6 @@ var flipCard = function() {
  		checkForMatchDelay();
  	};	
 };
-
  // Check if cards match and empty the array after checking
 var checkForMatch = function() {
 	var flippedCards = document.querySelectorAll("img[data-status = 'flipped']");
@@ -72,22 +68,18 @@ var checkForMatch = function() {
 			} else {
 
 			};
-		
 			cardsInPlay = [];
 			cardsInPlaySuit = [];
 	}  //Check if player has clicked same card twice
 	else if (cardsInPlay[0] === cardsInPlay[1] && cardsInPlaySuit[0] == cardsInPlaySuit[1]) {
-		//alert("No Cheating!");
 		for (i = 0; i <flippedCards.length; i++) {
 				flippedCards[i].setAttribute('src', "images/cards/back.png");
 				flippedCards[i].setAttribute('data-status', "unflipped");
 			};
 		cardsInPlay = [];
 		cardsInPlaySuit = [];
-	} //Reset state if no match found
+	} //Reset state if no match found: Set status back to unflipped and change src
 	else {
-		//alert("Sorry, try again.");
-		// Add a way to unflip wrong cards -> set status back to unflipped and change src
 			scoreString -= 2;
 			document.getElementById('scoredisplay').innerHTML = scoreString;
 			for (i = 0; i <flippedCards.length; i++) {
@@ -97,14 +89,11 @@ var checkForMatch = function() {
 			cardsInPlay = [];
 			cardsInPlaySuit = [];
 	}
-}
-
-//checkmatch but with delay
-
-var checkForMatchDelay = function(){
-	setTimeout(checkForMatch, 2000);
 };
-
+//checkmatch but with delay
+var checkForMatchDelay = function(){
+	setTimeout(checkForMatch, 1200);
+};
 //Reset Board and Score function
 var reset = function() {
 	document.getElementById('game-board').innerHTML = "";
@@ -112,17 +101,13 @@ var reset = function() {
 	document.getElementById('scoredisplay').innerHTML = 0;
 	cardsInPlay = [];
 };
-
 //Add Listener for Reset button click
 document.getElementById('resetbutton').addEventListener('click', reset);
-
 //Enter highscores into table
 var scores = [];
 	for (i = 0;i <= 4;i++)
 		scores.push(parseInt(document.getElementById('score'+ i).innerHTML));
-
 //validate Playername input
-var player = "";
 var highscoreInput = function() {
 	player = prompt("Congratulations! Enter your name for the Board!");
 	if (player.length > 10) {
@@ -131,13 +116,11 @@ var highscoreInput = function() {
 
 	};
 };
-
 //change highscoreboard
 var updateScore = function(rank) {
 	document.getElementById('player' + rank).innerHTML = player;
 	document.getElementById('score' + rank).innerHTML = scoreString;
 };
-
 // Check for highscore using if
 var checkForHighscore = function() {
 	if ( scoreString > scores[0]) {
@@ -158,8 +141,29 @@ var checkForHighscore = function() {
 	} else {
 		alert("Better luck next time!");
 	}
+	saveScores();
 	reset();
+};
+// Save highscoretable in local storage
+var saveScores = function() {
+	var tableStorage = document.getElementById('highscoretable').innerHTML;
+	localStorage.setItem('highscorestorage', tableStorage);
+
+};
+// Retrieve scores from storage
+var loadScores = function() {
+	var innerHTMLTable = localStorage.getItem('highscorestorage');
+	document.getElementById('highscoretable').innerHTML = innerHTMLTable;
+};
+// Check if game has ever stored scores locally and retrieve them if it has
+var initializeScores = function() {
+	if (localStorage.getItem('highscorestorage').length = 0) {
+		saveScores();
+	} else {
+		loadScores();
+	}
 };
 		
 createBoard();
 shuffleCards();
+initializeScores();
