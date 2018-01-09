@@ -157,6 +157,9 @@ td {
 	vertical-align: middle;
 	line-height: 60px;
 }
+#fakebutton:hover {
+	border: 2px dotted black;
+}
 
 #scoredisplay {
 	font-size: 22px;

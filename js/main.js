@@ -100,6 +100,7 @@ var reset = function() {
 	createBoard();
 	shuffleCards();
 	document.getElementById('scoredisplay').innerHTML = 0;
+	var scoreString = parseInt(document.getElementById('scoredisplay').innerHTML)
 	cardsInPlay = [];
 	console.log("Game was reset.");
 };
