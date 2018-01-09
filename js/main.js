@@ -4,7 +4,7 @@ console.log("Up and running!");
  var cardsInPlaySuit = [];
  var cardAmount = cards.length;
  var player = "";
- var scoreString = parseInt(document.getElementById('scoredisplay').innerHTML);
+ var scoreString = 0;
  //Random number generation from MDN
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -80,6 +80,7 @@ var checkForMatch = function() {
 		cardsInPlaySuit = [];
 	} //Reset state if no match found: Set status back to unflipped and change src
 	else {
+			console.log(scoreString);
 			scoreString -= 2;
 			document.getElementById('scoredisplay').innerHTML = scoreString;
 			for (i = 0; i <flippedCards.length; i++) {
@@ -100,9 +101,10 @@ var reset = function() {
 	createBoard();
 	shuffleCards();
 	document.getElementById('scoredisplay').innerHTML = 0;
-	var scoreString = parseInt(document.getElementById('scoredisplay').innerHTML)
+	scoreString = 0;
 	cardsInPlay = [];
 	console.log("Game was reset.");
+	console.log("Score should be " + scoreString);
 };
 //Add Listener for Reset button click
 document.getElementById('reset').addEventListener('click', reset);
