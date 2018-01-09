@@ -132,28 +132,29 @@ var highscoreInput = function() {
 	};
 };
 
+//change highscoreboard
+var updateScore = function(rank) {
+	document.getElementById('player' + rank).innerHTML = player;
+	document.getElementById('score' + rank).innerHTML = scoreString;
+};
+
 // Check for highscore using if
 var checkForHighscore = function() {
 	if ( scoreString > scores[0]) {
 		highscoreInput();
-		document.getElementById('player0').innerHTML = player;
-		document.getElementById('score0').innerHTML = scoreString;
+		updateScore(0);
 	} else if (scoreString > scores[1]) {
 		highscoreInput();
-		document.getElementById('player1').innerHTML = player;
-		document.getElementById('score1').innerHTML = scoreString;
+		updateScore(1);
 	} else if ( scoreString > scores[2]) {
 		highscoreInput();
-		document.getElementById('player2').innerHTML = player;
-		document.getElementById('score2').innerHTML = scoreString;
+		updateScore(2);
 	} else if ( scoreString > scores[3]) {
 		highscoreInput();
-		document.getElementById('player3').innerHTML = player;
-		document.getElementById('score3').innerHTML = scoreString;
+		updateScore(3);
 	}else if ( scoreString > scores [4]) {
 		highscoreInput();
-		document.getElementById('player4').innerHTML = player;
-		document.getElementById('score4').innerHTML = scoreString;
+		updateScore(4);
 	} else {
 		alert("Better luck next time!");
 	}
