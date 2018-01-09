@@ -98,11 +98,13 @@ var checkForMatchDelay = function(){
 var reset = function() {
 	document.getElementById('game-board').innerHTML = "";
 	createBoard();
+	shuffleCards();
 	document.getElementById('scoredisplay').innerHTML = 0;
 	cardsInPlay = [];
+	console.log("Game was reset.");
 };
 //Add Listener for Reset button click
-document.getElementById('resetbutton').addEventListener('click', reset);
+document.getElementById('reset').addEventListener('click', reset);
 //Enter highscores into table
 var scores = [];
 	for (i = 0;i <= 4;i++)
@@ -148,7 +150,6 @@ var checkForHighscore = function() {
 var saveScores = function() {
 	var tableStorage = document.getElementById('highscoretable').innerHTML;
 	localStorage.setItem('highscorestorage', tableStorage);
-
 };
 // Retrieve scores from storage
 var loadScores = function() {
