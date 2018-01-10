@@ -89,5 +89,35 @@
 	rank:"5",
  	suit:"clubs",
  	cardImage:"images/cards/5-of-clubs.png",
+ },
+  {
+	rank:"4",
+ 	suit:"clubs",
+ 	cardImage:"images/cards/4-of-clubs.png",
+ },
+ {
+	rank:"4",
+ 	suit:"spades",
+ 	cardImage:"images/cards/4-of-spades.png",
+ },
+ {
+	rank:"3",
+ 	suit:"spades",
+ 	cardImage:"images/cards/3-of-spades.png",
+ },
+ {
+	rank:"3",
+ 	suit:"clubs",
+ 	cardImage:"images/cards/3-of-clubs.png",
+ },
+  {
+	rank:"2",
+ 	suit:"spades",
+ 	cardImage:"images/cards/2-of-spades.png",
+ },
+ {
+	rank:"2",
+ 	suit:"clubs",
+ 	cardImage:"images/cards/2-of-clubs.png",
  }
  ];
