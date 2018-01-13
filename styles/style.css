@@ -182,13 +182,13 @@ td {
 	background-image: url("../images/tabletop.jpg");
 }
 
-#fakebutton{
+.fakebutton{
 	line-height: 53.5px;
 	text-align: center;
 	vertical-align: middle;
 }
 
-#fakebutton:hover {
+.fakebutton:hover {
 	border: 2px dotted black;
 }
 

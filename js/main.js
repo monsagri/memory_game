@@ -5,13 +5,16 @@ console.log("Up and running!");
  var cardAmount = cards.length;
  var player = "";
  var scoreString = 0;
+ var difficulty = "easy";
  //Random number generation from MDN
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 //Create the board
 var createBoard = function() {
-	for (var i = 0; i < cards.length; i++) {
+	console.log("The current difficulty setting is " + difficulty);
+	if (difficulty === "default") {
+		for (var i = 0; i < cards.length; i++) {
 			cardElement = document.createElement('img');
 			cardElement.setAttribute('src', "images/cards/back.png");
 			cardElement.setAttribute('data-id', i);
@@ -19,8 +22,35 @@ var createBoard = function() {
 			cardElement.setAttribute('class', "card");
 			cardElement.addEventListener('click', flipCard);
 			document.getElementById('game-board').appendChild(cardElement);
+	}
+	} else if (difficulty === "easy") {
+			for (var i = 0; i < 8; i++) {
+			cardElement = document.createElement('img');
+			cardElement.setAttribute('src', "images/cards/back.png");
+			cardElement.setAttribute('data-id', i);
+			cardElement.setAttribute('data-status', "unflipped");
+			cardElement.setAttribute('class', "card");
+			cardElement.addEventListener('click', flipCard);
+			document.getElementById('game-board').appendChild(cardElement);
+	}} else {
+		alert("Please set a difficulty.");
 	};
 };
+
+// set difficulty to default
+
+var defaultGame = function() {
+	difficulty = "default";
+	reset();
+};
+
+// set difficulty to easy
+var easyGame = function() {
+	difficulty = "easy";
+	reset();
+};
+
+
 //Delay ending the game
 var timedCheck = function(){
 	setTimeout(checkForHighscore, 1200);
@@ -106,8 +136,7 @@ var reset = function() {
 	console.log("Game was reset.");
 	console.log("Score should be " + scoreString);
 };
-//Add Listener for Reset button click
-document.getElementById('reset').addEventListener('click', reset);
+
 //Enter highscores into table
 var scores = [];
 	for (i = 0;i <= 4;i++)
@@ -152,7 +181,9 @@ var checkForHighscore = function() {
 // Save highscoretable in local storage
 var saveScores = function() {
 	var tableStorage = document.getElementById('highscoretable').innerHTML;
+	console.log(tableStorage);
 	localStorage.setItem('highscorestorage', tableStorage);
+	console.log("Saving Scores")
 };
 // Retrieve scores from storage
 var loadScores = function() {
@@ -161,12 +192,21 @@ var loadScores = function() {
 };
 // Check if game has ever stored scores locally and retrieve them if it has
 var initializeScores = function() {
-	if (localStorage.getItem('highscorestorage').length = 0) {
-		saveScores();
+	if (localStorage.getItem('highscorestorage') === null) {
+		localStorage.setItem('highscorestorage', tableStorage);
+		console.log("Resetting Scoreboard");
 	} else {
 		loadScores();
+		console.log("Loading Scores");
 	}
 };
+
+//Add Listener for Reset button click
+document.getElementById('easy').addEventListener('click', easyGame);
+//Add Listener for Reset button click
+document.getElementById('default').addEventListener('click', defaultGame);
+//Add Listener for Reset button click
+document.getElementById('reset').addEventListener('click', reset);
 		
 createBoard();
 shuffleCards();
