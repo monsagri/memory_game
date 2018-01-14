@@ -39,16 +39,7 @@ var createBoard = function() {
 
 // set difficulty to default
 
-var defaultGame = function() {
-	difficulty = "default";
-	reset();
-};
 
-// set difficulty to easy
-var easyGame = function() {
-	difficulty = "easy";
-	reset();
-};
 
 
 //Delay ending the game
@@ -199,6 +190,21 @@ var initializeScores = function() {
 		loadScores();
 		console.log("Loading Scores");
 	}
+};
+
+var defaultGame = function() {
+	difficulty = "default";
+	reset();
+	document.getElementById('highscoretable').classList.remove("hidden");
+	document.getElementById('highscoretableeasy').classList.add("hidden");
+};
+
+// set difficulty to easy
+var easyGame = function() {
+	difficulty = "easy";
+	document.getElementById('highscoretableeasy').classList.remove("hidden");
+	document.getElementById('highscoretable').classList.add("hidden");
+	reset();
 };
 
 //Add Listener for Reset button click

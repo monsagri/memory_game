@@ -133,6 +133,9 @@ td {
 }
 
 /*Classes*/
+.hidden {
+	display: none;
+}
 
 .clearfix:after {
 	visibility: hidden;
