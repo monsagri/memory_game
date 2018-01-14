@@ -1,15 +1,31 @@
 console.log("Up and running!");
+/*
+	 Description of Functions and layout goes here
+
+	ALSO WHY THE FUCK DOES THE DEFAULT HIGHSCORE PLACE SCORES IN THE WRONG POSITION
+
+	 I NEED TO MOVE ALL FUNCTIONS RELATED TO THE SECOND HIGHSCOREBOARD INTO ITS OWN JS FILE AND ONLY CALL IT WHEN NEEDED
+	 THIS MESS IS GETTING OUT OF HAND
+
+	 I ALSO NEED TO MAKE SURE THAT SCORES DONT GET REPLACED, BUT INSTEAD MOVED DOWN THE SCOREBOARD 
+
+*/
+
+
 //Declare global variables
  var cardsInPlay = [];
  var cardsInPlaySuit = [];
  var cardAmount = cards.length;
  var player = "";
  var scoreString = 0;
- var difficulty = "easy";
+ var difficulty = "default";
+ var scores = [];
+ var scoresEasy = [];
  //Random number generation from MDN
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
+
 //Create the board
 var createBoard = function() {
 	console.log("The current difficulty setting is " + difficulty);
@@ -37,25 +53,11 @@ var createBoard = function() {
 	};
 };
 
-// set difficulty to default
-
-var defaultGame = function() {
-	difficulty = "default";
-	reset();
-};
-
-// set difficulty to easy
-var easyGame = function() {
-	difficulty = "easy";
-	reset();
-};
-
-
 //Delay ending the game
 var timedCheck = function(){
 	setTimeout(checkForHighscore, 1200);
 };
-// Use insertChild to move each card around once to a random position
+// Shuffle the cards: Use insertChild to move each card around once to a random position
 	//Create a random number between 0 and currentBoard.length as new position
 var shuffleCards = function() {
 	var currentBoard = document.querySelectorAll("img[data-id]");
@@ -113,7 +115,7 @@ var checkForMatch = function() {
 			console.log(scoreString);
 			scoreString -= 2;
 			document.getElementById('scoredisplay').innerHTML = scoreString;
-			for (i = 0; i <flippedCards.length; i++) {
+			for (i = 0; i < flippedCards.length; i++) {
 				flippedCards[i].setAttribute('src', "images/cards/back.png");
 				flippedCards[i].setAttribute('data-status', "unflipped");
 			};
@@ -128,86 +130,202 @@ var checkForMatchDelay = function(){
 //Reset Board and Score function
 var reset = function() {
 	document.getElementById('game-board').innerHTML = "";
-	createBoard();
-	shuffleCards();
 	document.getElementById('scoredisplay').innerHTML = 0;
 	scoreString = 0;
 	cardsInPlay = [];
+	scores = [];
+	scoresEasy = [];
 	console.log("Game was reset.");
 	console.log("Score should be " + scoreString);
+	createBoard();
+	shuffleCards();
+	readScores();
 };
 
-//Enter highscores into table
-var scores = [];
-	for (i = 0;i <= 4;i++)
-		scores.push(parseInt(document.getElementById('score'+ i).innerHTML));
 //validate Playername input
 var highscoreInput = function() {
-	player = prompt("Congratulations! Enter your name for the Board!");
+	player = prompt("Congratulations! You scored " + scoreString +". Enter your name for the Board!");
 	if (player.length > 10) {
 		player = prompt("Please use a maximum of 10 characters.");
 	} else {
 
 	};
 };
-//change highscoreboard
-var updateScore = function(rank) {
-	document.getElementById('player' + rank).innerHTML = player;
-	document.getElementById('score' + rank).innerHTML = scoreString;
+//Get scores from HTML I NEED TO GET THIS FROM THE LOCALSTORAGE DATABASE
+var readScores = function () {
+	for (i = 0; i < 5; i++) {
+		scores.push(parseInt(document.getElementById('score'+ i).innerHTML));
+		scoresEasy.push(parseInt(document.getElementById('score'+ i + 'easy').innerHTML));
+	}
 };
+
 // Check for highscore using if
+
 var checkForHighscore = function() {
-	if ( scoreString > scores[0]) {
-		highscoreInput();
-		updateScore(0);
-	} else if (scoreString > scores[1]) {
-		highscoreInput();
-		updateScore(1);
-	} else if ( scoreString > scores[2]) {
-		highscoreInput();
-		updateScore(2);
-	} else if ( scoreString > scores[3]) {
-		highscoreInput();
-		updateScore(3);
-	}else if ( scoreString > scores [4]) {
-		highscoreInput();
-		updateScore(4);
+	if (difficulty === "defalut") {
+		if ( scoreString > scores[0]) {
+			highscoreInput();
+			updateScore(0);
+		} else if (scoreString > scores[1]) {
+			highscoreInput();
+			updateScore(1);
+		} else if ( scoreString > scores[2]) {
+			highscoreInput();
+			updateScore(2);
+		} else if ( scoreString > scores[3]) {
+			highscoreInput();
+			updateScore(3);
+		}else if ( scoreString > scores[4]) {
+			highscoreInput();
+			updateScore(4);
+		} else {
+			alert("Your Score is  " + scoreString +". Better luck next time!");
+		}
 	} else {
-		alert("Better luck next time!");
+		if ( scoreString > scoresEasy[0]) {
+			highscoreInput();
+			updateScore(0);
+		} else if (scoreString > scoresEasy[1]) {
+			highscoreInput();
+			updateScore(1);
+		} else if ( scoreString > scoresEasy[2]) {
+			highscoreInput();
+			updateScore(2);
+		} else if ( scoreString > scoresEasy[3]) {
+			highscoreInput();
+			updateScore(3);
+		}else if ( scoreString > scoresEasy[4]) {
+			highscoreInput();
+			updateScore(4);
+		} else {
+			alert("Your Score is  " + scoreString +". Better luck next time!");
+		}
 	}
 	saveScores();
 	reset();
 };
+
+//change highscoreboard
+var updateScore = function(rank) {
+	if (difficulty === "default") {
+		for (i = 4; i < rank; i--) {
+			// move everything down by 1
+			document.getElementById('player' + i).innerHTML = document.getElementById('player' + (i - 1)).innerHTML;
+			document.getElementById('score' + i).innerHTML = document.getElementById('score' + (i - 1)).innerHTML;
+		};
+		//change beat score to new score
+		document.getElementById('player' + rank).innerHTML = player;
+		document.getElementById('score' + rank).innerHTML = scoreString;
+	} else {
+			for (i = 4; i < rank; i--) {
+			// move everything down by 1
+			console.log(document.getElementById('score' + i + 'easy').innerHTML);
+			document.getElementById('player' + i + 'easy').innerHTML = document.getElementById('player' + (i - 1) + 'easy').innerHTML;
+			document.getElementById('score' + i + 'easy').innerHTML = document.getElementById('score' + (i - 1) + 'easy').innerHTML;
+			console.log(document.getElementById('score' + i + 'easy').innerHTML);
+			};
+			document.getElementById('player' + rank + 'easy').innerHTML = player;
+			document.getElementById('score' + rank + 'easy').innerHTML = scoreString;
+	}
+};
+	
 // Save highscoretable in local storage
 var saveScores = function() {
-	var tableStorage = document.getElementById('highscoretable').innerHTML;
-	console.log(tableStorage);
-	localStorage.setItem('highscorestorage', tableStorage);
-	console.log("Saving Scores")
+	if (difficulty === "default") {
+		var tableStorage = document.getElementById('highscoretable').innerHTML;
+		console.log(tableStorage);
+		localStorage.setItem('highscorestorage', tableStorage);
+		console.log("Saving Scores");
+	} else {
+		var tableStorageEasy = document.getElementById('highscoretableeasy').innerHTML;
+		localStorage.setItem('highscorestorageeasy', tableStorageEasy);
+		console.log("Saving Scores to easy highscoreboard");
+	}
 };
 // Retrieve scores from storage
+// THIS SHOULDNT NEED AN IF STATEMENT TO STOP IT FROM RUNNING BOTH - WHO CARES IF THEY DO
 var loadScores = function() {
-	var innerHTMLTable = localStorage.getItem('highscorestorage');
-	document.getElementById('highscoretable').innerHTML = innerHTMLTable;
+	
+		var innerHTMLTable = localStorage.getItem('highscorestorage');
+		document.getElementById('highscoretable').innerHTML = innerHTMLTable;
+		console.log("Loading Default Scores");
+	
+		var innerHTMLTable = localStorage.getItem('highscorestorageeasy');
+		document.getElementById('highscoretableeasy').innerHTML = innerHTMLTable;
+		console.log("Loading Scores from easy highscoreboard");
+	
 };
 // Check if game has ever stored scores locally and retrieve them if it has
 var initializeScores = function() {
+	//Load default scores from localstorage or create them
 	if (localStorage.getItem('highscorestorage') === null) {
+		var tableStorage = document.getElementById('highscoretable').innerHTML;	
+		console.log(tableStorage);
 		localStorage.setItem('highscorestorage', tableStorage);
-		console.log("Resetting Scoreboard");
+		console.log(localStorage.setItem('highscorestorage'));
 	} else {
 		loadScores();
-		console.log("Loading Scores");
-	}
+		console.log("Loading Default Scores Initially");
+	};// load easy scores from localstorage or createthem
+	if (localStorage.getItem('highscorestorageeasy' === null)) {
+		var tableStorageEasy = document.getElementById('highscoretableeasy').innerHTML;
+		localStorage.setItem('highscorestorageeasy', tableStorageEasy);
+		console.log("Creating initial Easy Highscoreboard.");
+	} else {
+		loadScores();
+		console.log("Loading  Easy Scores Initially");
+	};
+	//read scores into array for highscorefunctions
+	readScores();
 };
 
-//Add Listener for Reset button click
+var resetHighScores = function() {
+	localStorage.removeItem('highscoretable');
+	localStorage.removeItem('highscoretableeasy');
+	console.log("Scores reset");
+	initializeScores();
+};
+
+//create functions to avoid call on pageload
+
+var hideDefault = function() {
+	document.getElementById('highscoretableeasy').classList.remove("hidden");
+	document.getElementById('highscoretable').classList.add("hidden");
+	console.log("Showing Easy Highscoreboard");
+};
+
+var hideEasy = function() {
+	document.getElementById('highscoretable').classList.remove("hidden");
+	document.getElementById('highscoretableeasy').classList.add("hidden");
+	console.log("Showing Default Highscoreboard");
+};
+
+// set difficulty to default
+
+var defaultGame = function() {
+	difficulty = "default";
+	reset();
+};
+
+// set difficulty to easy
+var easyGame = function() {
+	difficulty = "easy";
+	reset();
+};
+//Add Listener for easy button click
 document.getElementById('easy').addEventListener('click', easyGame);
-//Add Listener for Reset button click
+document.getElementById('easy').addEventListener('click', hideDefault);
+
+//Add Listener for default button click
 document.getElementById('default').addEventListener('click', defaultGame);
+document.getElementById('default').addEventListener('click', hideEasy);
+
+//Add Listener for highscore reset click
+document.getElementById('resethighscores').addEventListener('click', resetHighScores);
+
 //Add Listener for Reset button click
 document.getElementById('reset').addEventListener('click', reset);
-		
+
 createBoard();
 shuffleCards();
 initializeScores();
