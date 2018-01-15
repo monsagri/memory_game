@@ -167,12 +167,20 @@ var highscoreInput = function() {
 };
 //change default highscoreboard
 var updateScore = function(rank) {
+		for (i = 4; i === rank; i--) {
+			document.getElementById('player' + rank).innerHTML = document.getElementById('player' + (rank - 1)).innerHTML
+			document.getElementById('score' + rank).innerHTML = document.getElementById('score' + (rank - 1)).innerHTML
+		}
 	document.getElementById('player' + rank).innerHTML = player;
 	document.getElementById('score' + rank).innerHTML = scoreString;
 };
 
 //change easy highscoreboard
 var updateScoreEasy = function(rank) {
+		for (i = 4; i === rank; i--) {
+			document.getElementById('player' + rank + 'easy').innerHTML = document.getElementById('player' + (rank - 1 + 'easy')).innerHTML
+			document.getElementById('score' + rank + 'easy').innerHTML = document.getElementById('score' + (rank - 1 + 'easy')).innerHTML
+		}
 	document.getElementById('player' + rank + 'easy').innerHTML = player;
 	document.getElementById('score' + rank +'easy').innerHTML = scoreString;
 };
