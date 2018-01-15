@@ -1,9 +1,9 @@
 console.log("Up and running!");
 /* 
 	TODO LIST
-		ADD EASY HIGHSCOREBOARD FUNCTIONALTY
+		
 		MAKE SURE SCORES ARE PUSHED DOWN NOT REPLACED
-		ADD RESET SCORES FUNCTIONALITY
+	
 
 */
 //Declare global variables
@@ -44,6 +44,8 @@ var createBoard = function() {
 	}} else {
 		alert("Please set a difficulty.");
 	};
+	initializeScores();
+	readDefaultScores();
 };
 //Delay ending the game
 var timedCheck = function(){
@@ -149,8 +151,9 @@ var readDefaultScores = function() {
 //Read  Easy Mode Highscores from current display
 var readEasyScores = function() {
 	scoresEasy = [];
-	for (i = 0;i <= 4;i++)
+	for (i = 0;i <= 4;i++) {
 		scoresEasy.push(parseInt(document.getElementById('score'+ i + 'easy').innerHTML));
+	}
 };
 	
 //validate Playername input
@@ -228,38 +231,60 @@ var saveScores = function() {
 	console.log(tableStorage);
 	console.log(tableStorageEasy);
 	localStorage.setItem('highscorestorage', tableStorage);
-	localStorage.setItem('highscorestorageeasy', tableStorage);
+	localStorage.setItem('highscorestorageeasy', tableStorageEasy);
 	console.log("Saving Scores")
 };
-// Retrieve scores from storage
+// Retrieve Default scores from storage
 var loadScores = function() {
 	var innerHTMLTable = localStorage.getItem('highscorestorage');
 	document.getElementById('highscoretable').innerHTML = innerHTMLTable;
+	console.log("Loading Scores");
+};
+//Retrieve Easy Scores from Storage
+var loadScoresEasy = function() {
+	var innerHTMLTableEasy = localStorage.getItem('highscorestorageeasy');
+	document.getElementById('highscoretableeasy').innerHTML = innerHTMLTableEasy;
+	console.log("Loading Easy Scores");
 };
 // Check if game has ever stored scores locally and retrieve them if it has
 var initializeScores = function() {
 	if (localStorage.getItem('highscorestorage') === null) {
+		var tableStorage = document.getElementById('highscoretable').innerHTML;
 		localStorage.setItem('highscorestorage', tableStorage);
 		console.log("Resetting Scoreboard");
 	} else {
 		loadScores();
-		console.log("Loading Scores");
+	};
+	if (localStorage.getItem('highscorestorageeasy') === null) {
+		var tableStorageEasy = document.getElementById('highscoretableeasy').innerHTML;
+		localStorage.setItem('highscorestorageeasy', tableStorageEasy);
+	} else {
+		loadScoresEasy();
 	}
+
 };
+
+var resetScores = function() {
+	localStorage.clear();
+	window.location.reload(true);
+	initializeScores();
+}
 
 var defaultGame = function() {
 	difficulty = "default";
 	reset();
 	document.getElementById('highscoretable').classList.remove("hidden");
 	document.getElementById('highscoretableeasy').classList.add("hidden");
+	readEasyScores();
 };
 
 // set difficulty to easy
 var easyGame = function() {
 	difficulty = "easy";
+	reset();
 	document.getElementById('highscoretableeasy').classList.remove("hidden");
 	document.getElementById('highscoretable').classList.add("hidden");
-	reset();
+	readEasyScores();
 };
 
 //Add Listener for Reset button click
@@ -267,8 +292,9 @@ document.getElementById('easy').addEventListener('click', easyGame);
 //Add Listener for Reset button click
 document.getElementById('default').addEventListener('click', defaultGame);
 //Add Listener for Reset button click
+document.getElementById('resetscores').addEventListener('click', resetScores);
+//Add Listener for Reset button click
 document.getElementById('reset').addEventListener('click', reset);
 		
 createBoard();
 shuffleCards();
-initializeScores();
