@@ -2,8 +2,8 @@ console.log("Up and running!");
 /* 
 	TODO LIST
 		
-		MAKE SURE SCORES ARE PUSHED DOWN NOT REPLACED
-	
+		Create groupings and index for this file
+		Eventually fix bug where you can click third card in window before checkmatch is called
 
 */
 //Declare global variables
@@ -15,10 +15,12 @@ console.log("Up and running!");
  var difficulty = "default";
  var scores = [];
  var scoresEasy = [];
- //Random number generation from MDN
+
+//Random number generation from MDN
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
+
 //Create the board
 var createBoard = function() {
 	console.log("The current difficulty setting is " + difficulty);
@@ -47,16 +49,53 @@ var createBoard = function() {
 	initializeScores();
 	readDefaultScores();
 };
-//Delay ending the game
-var timedCheck = function(){
-	if (difficulty === "default") {
-		setTimeout(checkForHighscore, 1200);
-	} else if (difficulty === 'easy') {
-		setTimeout(checkForHighscoreEasy, 1200);
+
+// Check if game has ever stored scores locally and retrieve them if it has
+var initializeScores = function() {
+	if (localStorage.getItem('highscorestorage') === null) {
+		var tableStorage = document.getElementById('highscoretable').innerHTML;
+		localStorage.setItem('highscorestorage', tableStorage);
+		console.log("Resetting Scoreboard");
+	} else {
+		loadScores();
+	};
+	if (localStorage.getItem('highscorestorageeasy') === null) {
+		var tableStorageEasy = document.getElementById('highscoretableeasy').innerHTML;
+		localStorage.setItem('highscorestorageeasy', tableStorageEasy);
+	} else {
+		loadScoresEasy();
+	}
+
+};
+// Retrieve Default scores from storage
+var loadScores = function() {
+	var innerHTMLTable = localStorage.getItem('highscorestorage');
+	document.getElementById('highscoretable').innerHTML = innerHTMLTable;
+	console.log("Loading Scores");
+};
+//Retrieve Easy Scores from Storage
+var loadScoresEasy = function() {
+	var innerHTMLTableEasy = localStorage.getItem('highscorestorageeasy');
+	document.getElementById('highscoretableeasy').innerHTML = innerHTMLTableEasy;
+	console.log("Loading Easy Scores");
+};
+
+//Read  Default Highscores from current display
+var readDefaultScores = function() {
+	scores = [];
+	for (i = 0;i <= 4;i++)
+		scores.push(parseInt(document.getElementById('score'+ i).innerHTML));
+};
+//Read  Easy Mode Highscores from current display
+var readEasyScores = function() {
+	scoresEasy = [];
+	for (i = 0;i <= 4;i++) {
+		scoresEasy.push(parseInt(document.getElementById('score'+ i + 'easy').innerHTML));
 	}
 };
+
 // Use insertChild to move each card around once to a random position
-	//Create a random number between 0 and currentBoard.length as new position
+//Create a random number between 0 and currentBoard.length as new position
 var shuffleCards = function() {
 	var currentBoard = document.querySelectorAll("img[data-id]");
 	for (i = 0; i < currentBoard.length; i++) {
@@ -66,7 +105,7 @@ var shuffleCards = function() {
 			document.getElementById('game-board').insertBefore(cardToShuffle, randomCardLocation);
 	};
 };
- // flipping Cards 
+// flipping Cards 
 var flipCard = function() {
 	cardId = this.getAttribute('data-id');
 	this.setAttribute('data-status', "flipped");
@@ -78,7 +117,12 @@ var flipCard = function() {
  		checkForMatchDelay();
  	};	
 };
- // Check if cards match and empty the array after checking
+
+//checkmatch but with delay
+var checkForMatchDelay = function(){
+	setTimeout(checkForMatch, 1200);
+};
+// Check if cards match and empty the array after checking
 var checkForMatch = function() {
 	var flippedCards = document.querySelectorAll("img[data-status = 'flipped']");
 	// Check for a match
@@ -123,69 +167,7 @@ var checkForMatch = function() {
 			cardsInPlaySuit = [];
 	}
 };
-//checkmatch but with delay
-var checkForMatchDelay = function(){
-	setTimeout(checkForMatch, 1200);
-};
-//Reset Board and Score function
-var reset = function() {
-	document.getElementById('game-board').innerHTML = "";
-	createBoard();
-	shuffleCards();
-	document.getElementById('scoredisplay').innerHTML = 0;
-	scoreString = 0;
-	cardsInPlay = [];
-	console.log("Game was reset.");
-	console.log("Score should be " + scoreString);
-	readDefaultScores();
-	readEasyScores();
-};
-
-//Read  Default Highscores from current display
-var readDefaultScores = function() {
-	scores = [];
-	for (i = 0;i <= 4;i++)
-		scores.push(parseInt(document.getElementById('score'+ i).innerHTML));
-};
-
-//Read  Easy Mode Highscores from current display
-var readEasyScores = function() {
-	scoresEasy = [];
-	for (i = 0;i <= 4;i++) {
-		scoresEasy.push(parseInt(document.getElementById('score'+ i + 'easy').innerHTML));
-	}
-};
-	
-//validate Playername input
-var highscoreInput = function() {
-	player = prompt("Congratulations! Enter your name for the Board!");
-	if (player.length > 10) {
-		player = prompt("Please use a maximum of 10 characters.");
-	} else {
-
-	};
-};
-//change default highscoreboard
-var updateScore = function(rank) {
-		for (i = 4; i === rank; i--) {
-			document.getElementById('player' + rank).innerHTML = document.getElementById('player' + (rank - 1)).innerHTML
-			document.getElementById('score' + rank).innerHTML = document.getElementById('score' + (rank - 1)).innerHTML
-		}
-	document.getElementById('player' + rank).innerHTML = player;
-	document.getElementById('score' + rank).innerHTML = scoreString;
-};
-
-//change easy highscoreboard
-var updateScoreEasy = function(rank) {
-		for (i = 4; i === rank; i--) {
-			document.getElementById('player' + rank + 'easy').innerHTML = document.getElementById('player' + (rank - 1 + 'easy')).innerHTML
-			document.getElementById('score' + rank + 'easy').innerHTML = document.getElementById('score' + (rank - 1 + 'easy')).innerHTML
-		}
-	document.getElementById('player' + rank + 'easy').innerHTML = player;
-	document.getElementById('score' + rank +'easy').innerHTML = scoreString;
-};
-
-// Check for highscore using if
+// Check for Default Game ighscore using if
 var checkForHighscore = function() {
 	if ( scoreString > scores[0]) {
 		highscoreInput();
@@ -208,7 +190,6 @@ var checkForHighscore = function() {
 	saveScores();
 	reset();
 };
-
 // Check for Easy Game Highscore
 var checkForHighscoreEasy = function() {
 	if ( scoreString > scoresEasy[0]) {
@@ -232,6 +213,35 @@ var checkForHighscoreEasy = function() {
 	saveScores();
 	reset();
 };
+
+//validate Playername input
+var highscoreInput = function() {
+	player = prompt("Congratulations! Enter your name for the Board!");
+	if (player.length > 10) {
+		player = prompt("Please use a maximum of 10 characters.");
+	} else {
+
+	};
+};
+//change default highscoreboard
+var updateScore = function(rank) {
+		for (i = 4; i === rank; i--) {
+			document.getElementById('player' + rank).innerHTML = document.getElementById('player' + (rank - 1)).innerHTML
+			document.getElementById('score' + rank).innerHTML = document.getElementById('score' + (rank - 1)).innerHTML
+		}
+	document.getElementById('player' + rank).innerHTML = player;
+	document.getElementById('score' + rank).innerHTML = scoreString;
+};
+//change easy highscoreboard
+var updateScoreEasy = function(rank) {
+		for (i = 4; i === rank; i--) {
+			document.getElementById('player' + rank + 'easy').innerHTML = document.getElementById('player' + (rank - 1 + 'easy')).innerHTML
+			document.getElementById('score' + rank + 'easy').innerHTML = document.getElementById('score' + (rank - 1 + 'easy')).innerHTML
+		}
+	document.getElementById('player' + rank + 'easy').innerHTML = player;
+	document.getElementById('score' + rank +'easy').innerHTML = scoreString;
+};
+
 // Save highscoretable in local storage
 var saveScores = function() {
 	var tableStorage = document.getElementById('highscoretable').innerHTML;
@@ -242,42 +252,27 @@ var saveScores = function() {
 	localStorage.setItem('highscorestorageeasy', tableStorageEasy);
 	console.log("Saving Scores")
 };
-// Retrieve Default scores from storage
-var loadScores = function() {
-	var innerHTMLTable = localStorage.getItem('highscorestorage');
-	document.getElementById('highscoretable').innerHTML = innerHTMLTable;
-	console.log("Loading Scores");
-};
-//Retrieve Easy Scores from Storage
-var loadScoresEasy = function() {
-	var innerHTMLTableEasy = localStorage.getItem('highscorestorageeasy');
-	document.getElementById('highscoretableeasy').innerHTML = innerHTMLTableEasy;
-	console.log("Loading Easy Scores");
-};
-// Check if game has ever stored scores locally and retrieve them if it has
-var initializeScores = function() {
-	if (localStorage.getItem('highscorestorage') === null) {
-		var tableStorage = document.getElementById('highscoretable').innerHTML;
-		localStorage.setItem('highscorestorage', tableStorage);
-		console.log("Resetting Scoreboard");
-	} else {
-		loadScores();
-	};
-	if (localStorage.getItem('highscorestorageeasy') === null) {
-		var tableStorageEasy = document.getElementById('highscoretableeasy').innerHTML;
-		localStorage.setItem('highscorestorageeasy', tableStorageEasy);
-	} else {
-		loadScoresEasy();
-	}
 
+//Reset Board and Score function
+var reset = function() {
+	document.getElementById('game-board').innerHTML = "";
+	createBoard();
+	shuffleCards();
+	document.getElementById('scoredisplay').innerHTML = 0;
+	scoreString = 0;
+	cardsInPlay = [];
+	console.log("Game was reset.");
+	console.log("Score should be " + scoreString);
+	readDefaultScores();
+	readEasyScores();
 };
-
 var resetScores = function() {
 	localStorage.clear();
 	window.location.reload(true);
 	initializeScores();
 }
 
+//Set difficulty to default
 var defaultGame = function() {
 	difficulty = "default";
 	reset();
@@ -285,7 +280,6 @@ var defaultGame = function() {
 	document.getElementById('highscoretableeasy').classList.add("hidden");
 	readEasyScores();
 };
-
 // set difficulty to easy
 var easyGame = function() {
 	difficulty = "easy";

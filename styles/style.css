@@ -168,6 +168,16 @@ td {
 	width: 70%;
 }
 
+.fakebutton{
+	line-height: 53.5px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.fakebutton:hover {
+	border: 2px dotted black;
+}
+
 #wrappergame {
 	height: 100%;
 	width: 100%;
@@ -183,16 +193,6 @@ td {
 	width: 96%;
 	overflow: scroll;
 	background-image: url("../images/tabletop.jpg");
-}
-
-.fakebutton{
-	line-height: 53.5px;
-	text-align: center;
-	vertical-align: middle;
-}
-
-.fakebutton:hover {
-	border: 2px dotted black;
 }
 
 #scoredisplay {
