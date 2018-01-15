@@ -1,11 +1,20 @@
 console.log("Up and running!");
+/* 
+	TODO LIST
+		ADD EASY HIGHSCOREBOARD FUNCTIONALTY
+		MAKE SURE SCORES ARE PUSHED DOWN NOT REPLACED
+		ADD RESET SCORES FUNCTIONALITY
+
+*/
 //Declare global variables
  var cardsInPlay = [];
  var cardsInPlaySuit = [];
  var cardAmount = cards.length;
  var player = "";
  var scoreString = 0;
- var difficulty = "easy";
+ var difficulty = "default";
+ var scores = [];
+ var scoresEasy = [];
  //Random number generation from MDN
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -36,15 +45,13 @@ var createBoard = function() {
 		alert("Please set a difficulty.");
 	};
 };
-
-// set difficulty to default
-
-
-
-
 //Delay ending the game
 var timedCheck = function(){
-	setTimeout(checkForHighscore, 1200);
+	if (difficulty === "default") {
+		setTimeout(checkForHighscore, 1200);
+	} else if (difficulty === 'easy') {
+		setTimeout(checkForHighscoreEasy, 1200);
+	}
 };
 // Use insertChild to move each card around once to a random position
 	//Create a random number between 0 and currentBoard.length as new position
@@ -84,8 +91,10 @@ var checkForMatch = function() {
 			};
 		//Check to see if any cards remain unflipped and check for Highscores if not
 			var cardsLeft = document.querySelectorAll("img[data-status= 'unflipped']");
-			if (cardsLeft.length === 0) {
+			if (cardsLeft.length === 0 && difficulty === "default") {
 				checkForHighscore();
+			} else if (cardsLeft.length === 0 && difficulty === "easy") {
+				checkForHighscoreEasy();
 			} else {
 
 			};
@@ -126,12 +135,24 @@ var reset = function() {
 	cardsInPlay = [];
 	console.log("Game was reset.");
 	console.log("Score should be " + scoreString);
+	readDefaultScores();
+	readEasyScores();
 };
 
-//Enter highscores into table
-var scores = [];
+//Read  Default Highscores from current display
+var readDefaultScores = function() {
+	scores = [];
 	for (i = 0;i <= 4;i++)
 		scores.push(parseInt(document.getElementById('score'+ i).innerHTML));
+};
+
+//Read  Easy Mode Highscores from current display
+var readEasyScores = function() {
+	scoresEasy = [];
+	for (i = 0;i <= 4;i++)
+		scoresEasy.push(parseInt(document.getElementById('score'+ i + 'easy').innerHTML));
+};
+	
 //validate Playername input
 var highscoreInput = function() {
 	player = prompt("Congratulations! Enter your name for the Board!");
@@ -141,11 +162,18 @@ var highscoreInput = function() {
 
 	};
 };
-//change highscoreboard
+//change default highscoreboard
 var updateScore = function(rank) {
 	document.getElementById('player' + rank).innerHTML = player;
 	document.getElementById('score' + rank).innerHTML = scoreString;
 };
+
+//change easy highscoreboard
+var updateScoreEasy = function(rank) {
+	document.getElementById('player' + rank + 'easy').innerHTML = player;
+	document.getElementById('score' + rank +'easy').innerHTML = scoreString;
+};
+
 // Check for highscore using if
 var checkForHighscore = function() {
 	if ( scoreString > scores[0]) {
@@ -169,11 +197,38 @@ var checkForHighscore = function() {
 	saveScores();
 	reset();
 };
+
+// Check for Easy Game Highscore
+var checkForHighscoreEasy = function() {
+	if ( scoreString > scoresEasy[0]) {
+		highscoreInput();
+		updateScoreEasy(0);
+	} else if (scoreString > scoresEasy[1]) {
+		highscoreInput();
+		updateScoreEasy(1);
+	} else if ( scoreString > scoresEasy[2]) {
+		highscoreInput();
+		updateScoreEasy(2);
+	} else if ( scoreString > scoresEasy[3]) {
+		highscoreInput();
+		updateScoreEasy(3);
+	}else if ( scoreString > scoresEasy[4]) {
+		highscoreInput();
+		updateScoreEasy(4);
+	} else {
+		alert("Better luck next time!");
+	}
+	saveScores();
+	reset();
+};
 // Save highscoretable in local storage
 var saveScores = function() {
 	var tableStorage = document.getElementById('highscoretable').innerHTML;
+	var tableStorageEasy = document.getElementById('highscoretableeasy').innerHTML;
 	console.log(tableStorage);
+	console.log(tableStorageEasy);
 	localStorage.setItem('highscorestorage', tableStorage);
+	localStorage.setItem('highscorestorageeasy', tableStorage);
 	console.log("Saving Scores")
 };
 // Retrieve scores from storage
