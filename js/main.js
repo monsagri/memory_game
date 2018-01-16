@@ -216,7 +216,7 @@ var checkForHighscoreEasy = function() {
 
 //validate Playername input
 var highscoreInput = function() {
-	player = prompt("Congratulations! Enter your name for the Board!");
+	player = prompt("Congratulations! You scored " + scoreString + " points.  Enter your name for the Board!");
 	if (player.length > 10) {
 		player = prompt("Please use a maximum of 10 characters.");
 	} else {
@@ -225,18 +225,20 @@ var highscoreInput = function() {
 };
 //change default highscoreboard
 var updateScore = function(rank) {
-		for (i = 4; i === rank; i--) {
-			document.getElementById('player' + rank).innerHTML = document.getElementById('player' + (rank - 1)).innerHTML
-			document.getElementById('score' + rank).innerHTML = document.getElementById('score' + (rank - 1)).innerHTML
+	//moving Elements down by 1
+	for (i = 4; i > rank; i--) {
+			document.getElementById('player' + i).innerHTML = document.getElementById('player' + (i - 1)).innerHTML;
+			document.getElementById('score' + i).innerHTML = document.getElementById('score' + (i - 1)).innerHTML;
 		}
 	document.getElementById('player' + rank).innerHTML = player;
 	document.getElementById('score' + rank).innerHTML = scoreString;
 };
 //change easy highscoreboard
 var updateScoreEasy = function(rank) {
-		for (i = 4; i === rank; i--) {
-			document.getElementById('player' + rank + 'easy').innerHTML = document.getElementById('player' + (rank - 1 + 'easy')).innerHTML
-			document.getElementById('score' + rank + 'easy').innerHTML = document.getElementById('score' + (rank - 1 + 'easy')).innerHTML
+	//moving Elements down by 1
+	for (i = 4; i > rank; i--) {
+			document.getElementById('player' + i + 'easy').innerHTML = document.getElementById('player' + (i - 1) + 'easy').innerHTML;
+			document.getElementById('score' + i + 'easy').innerHTML = document.getElementById('score' + (i - 1) + 'easy').innerHTML;
 		}
 	document.getElementById('player' + rank + 'easy').innerHTML = player;
 	document.getElementById('score' + rank +'easy').innerHTML = scoreString;
@@ -269,7 +271,6 @@ var reset = function() {
 var resetScores = function() {
 	localStorage.clear();
 	window.location.reload(true);
-	initializeScores();
 }
 
 //Set difficulty to default
